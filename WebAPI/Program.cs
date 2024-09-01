@@ -26,7 +26,8 @@ namespace WebAPI
 
             builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
             builder.Services.AddScoped<ITarefaRepositorio, TarefaRepositorio>();
-             
+            builder.Services.AddScoped<ITokenRepositorio, TokenRepositorio>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

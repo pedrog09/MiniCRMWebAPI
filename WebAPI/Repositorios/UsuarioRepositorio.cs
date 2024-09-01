@@ -18,6 +18,11 @@ namespace WebAPI.Repositorios
             return await _dbContext.Usuarios?.FirstOrDefaultAsync(x=> x.Id == id);
         }
 
+        public async Task<UsuarioModel> BuscarPorNome(string name)
+        {
+            return await _dbContext.Usuarios?.FirstOrDefaultAsync(x => x.Name == name);
+        }
+
         public async Task<List<UsuarioModel>> BuscarTodosUsuarios()
         {
             return await _dbContext.Usuarios.ToListAsync();
@@ -40,6 +45,8 @@ namespace WebAPI.Repositorios
            
             usuarioPorId.Name = usuario.Name;
             usuarioPorId.Email = usuario.Email;
+            usuarioPorId.Password = usuario.Password;
+            usuarioPorId.Role = usuario.Role;
 
             _dbContext.Usuarios.Update(usuarioPorId);
             await _dbContext.SaveChangesAsync();
