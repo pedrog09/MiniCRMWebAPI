@@ -35,7 +35,7 @@ namespace WebAPI
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer",
-                    BearerFormat = "JWT",
+                    BearerFormat = "Jwt",
                     In = ParameterLocation.Header,
                     Description = "Cabeçalho de autorização JWT está usando o esquema de Bearer \r\n\r\n Digite o 'Bearer' antes de colocar o token. "
                 });
@@ -73,7 +73,7 @@ namespace WebAPI
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"], 
                         ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                     };
                 });
 
@@ -97,8 +97,8 @@ namespace WebAPI
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
 
             app.MapControllers();

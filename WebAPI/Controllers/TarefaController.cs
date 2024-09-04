@@ -6,6 +6,7 @@ using WebAPI.Repositorios.Interfaces;
 
 namespace WebAPI.Controllers
 {
+    [Authorize(Roles = "Manager")]
     [Route("api/[controller]")]
     [ApiController]
     public class TarefaController : ControllerBase
