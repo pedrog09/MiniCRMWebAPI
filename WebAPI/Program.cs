@@ -86,6 +86,8 @@ namespace WebAPI
             builder.Services.AddScoped<ITarefaRepositorio, TarefaRepositorio>();
             builder.Services.AddScoped<ITokenRepositorio, TokenRepositorio>();
 
+            builder.Services.AddCors();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -99,6 +101,11 @@ namespace WebAPI
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors(options => options
+            .SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .AllowAnyHeader());
 
 
             app.MapControllers();

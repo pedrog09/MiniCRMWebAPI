@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.DTOs;
 using WebAPI.Models;
 using WebAPI.Repositorios.Interfaces;
