@@ -10,5 +10,8 @@
         public string? Email { get; set; }
         public string? Role { get; set; }
 
+        // Relação com ClienteModel
+        public List<ClienteModel>? Clientes { get; set; }
+
     }
 }
