@@ -7,65 +7,56 @@ using WebAPI.Repositorios.Interfaces;
 
 namespace WebAPI.Controllers
 {
-    [ApiController]
+    [Authorize(Roles = "Manager")]
     [Route("api/[controller]")]
-    public class ClienteController : ControllerBase
+    [ApiController]
+    public class UsuarioController : ControllerBase
     {
-        private readonly IClienteRepositorio _clienteRepositorio;
+        private readonly IUsuarioRepositorio _usuarioRepositorio;
 
-        public ClienteController(IClienteRepositorio clienteRepository)
+        public UsuarioController(IUsuarioRepositorio usuarioRepositorio)
         {
-            _clienteRepositorio = clienteRepository;
+            _usuarioRepositorio = usuarioRepositorio;
         }
 
+
+
         [HttpGet]
-        public async Task<IActionResult> GetClientes()
+        public async Task<ActionResult<List<UsuarioModel>>> BuscarTodosUsuarios()
         {
-            var clientes = await _clienteRepositorio.GetClientesAsync();
-            return Ok(clientes);
+            List<UsuarioModel> usuarios = await _usuarioRepositorio.BuscarTodosUsuarios();
+            return Ok(usuarios);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetClienteById(int id)
+        public async Task<ActionResult<UsuarioModel>> BuscarPorId(int id)
         {
-            var cliente = await _clienteRepositorio.GetClienteByIdAsync(id);
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-            return Ok(cliente);
+            UsuarioModel usuario = await _usuarioRepositorio.BuscarPorId(id);
+            return Ok(usuario);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCliente([FromBody] ClienteModel cliente)
+        public async Task<ActionResult<UsuarioModel>> Cadastrar([FromBody] UsuarioModel usuarioModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            await _clienteRepositorio.AddClienteAsync(cliente);
-            return CreatedAtAction(nameof(GetClienteById), new { id = cliente.Id }, cliente);
+            UsuarioModel usuario = await _usuarioRepositorio.Adicionar(usuarioModel);
+            return Ok(usuario);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCliente(int id, [FromBody] ClienteModel cliente)
+        public async Task<ActionResult<UsuarioModel>> Atualizar([FromBody] UsuarioModel usuarioModel, int id)
         {
-            if (id != cliente.Id)
-            {
-                return BadRequest();
-            }
-
-            await _clienteRepositorio.UpdateClienteAsync(cliente);
-            return NoContent();
+            usuarioModel.Id = id;
+            UsuarioModel usuario = await _usuarioRepositorio.Atualizar(usuarioModel, id);
+            return Ok(usuario);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCliente(int id)
-        {
-            await _clienteRepositorio.DeleteClienteAsync(id);
-            return NoContent();
-        }
-    }
 
+        public async Task<ActionResult<UsuarioModel>> Apagar(int id)
+        {
+            bool apagado = await _usuarioRepositorio.Apagar(id);
+            return Ok(apagado);
+        }
+
+    }
 }
