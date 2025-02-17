@@ -7,9 +7,9 @@ namespace WebAPI.Repositorios
 {
     public class ClienteRepositorio : IClienteRepositorio
     {
-        private readonly ApplicationDbContext _context;
+        private readonly SistemaDeTarefasDBContext _context;
 
-        public ClienteRepositorio(ApplicationDbContext context)
+        public ClienteRepositorio(SistemaDeTarefasDBContext context)
         {
             _context = context;
         }

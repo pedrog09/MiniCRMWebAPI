@@ -7,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WebAPI.Factories.FacInterfaces;
+using WebAPI.Factories;
 
 namespace WebAPI
 {
@@ -85,6 +87,8 @@ namespace WebAPI
             builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
             builder.Services.AddScoped<ITarefaRepositorio, TarefaRepositorio>();
             builder.Services.AddScoped<ITokenRepositorio, TokenRepositorio>();
+            builder.Services.AddScoped<IClienteFactory, ClienteFactory>();
+
 
             builder.Services.AddCors();
 

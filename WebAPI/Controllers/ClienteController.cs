@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Factories.FacInterfaces;
 using WebAPI.Models;
 using WebAPI.Repositorios.Interfaces;
 
@@ -12,10 +13,12 @@ namespace WebAPI.Controllers
     public class ClienteController : ControllerBase
     {
         private readonly IClienteRepositorio _clienteRepositorio;
+        private readonly IClienteFactory _clienteFactory;
 
-        public ClienteController(IClienteRepositorio clienteRepository)
+        public ClienteController(IClienteRepositorio clienteRepository, IClienteFactory clienteFactory)
         {
             _clienteRepositorio = clienteRepository;
+            _clienteFactory = clienteFactory;
         }
 
         [HttpGet]
@@ -44,8 +47,9 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _clienteRepositorio.AddClienteAsync(cliente);
-            return CreatedAtAction(nameof(GetClienteById), new { id = cliente.Id }, cliente);
+            var novoCliente = _clienteFactory.CreateCliente(cliente.Name, cliente.Email, cliente.Role, cliente.Tipo, cliente.CNPJ, cliente.CPF);
+            await _clienteRepositorio.AddClienteAsync(novoCliente);
+            return CreatedAtAction(nameof(GetClienteById), new { id = novoCliente.Id }, novoCliente);
         }
 
         [HttpPut("{id}")]
