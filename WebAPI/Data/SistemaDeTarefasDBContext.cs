@@ -14,12 +14,14 @@ namespace WebAPI.Data
         public DbSet<ClienteModel> Clientes { get; set; }
         public DbSet<UsuarioModel> Usuarios { get; set; }
         public DbSet<TarefaModel> Tarefas { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             modelBuilder.ApplyConfiguration(new ClienteMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new TarefaMap());
+
             base.OnModelCreating(modelBuilder);
         }
     }

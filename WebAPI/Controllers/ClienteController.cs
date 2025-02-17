@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿﻿﻿﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetClienteById(int id)
         {
-            var cliente = await _clienteRepositorio.GetClienteByIdAsync(id);
+            var cliente = await _clienteRepositorio.BuscarPorId(id);
             if (cliente == null)
             {
                 return NotFound();
@@ -42,15 +42,45 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCliente([FromBody] ClienteModel cliente)
         {
+            if (cliente == null)
+            {
+                return BadRequest(new { message = "Cliente data is required" });
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var novoCliente = _clienteFactory.CreateCliente(cliente.Name, cliente.Email, cliente.Role, cliente.Tipo, cliente.CNPJ, cliente.CPF);
-            await _clienteRepositorio.AddClienteAsync(novoCliente);
-            return CreatedAtAction(nameof(GetClienteById), new { id = novoCliente.Id }, novoCliente);
+            try
+            {
+                if (cliente.UsuarioId <= 0)
+                {
+                    return BadRequest(new { message = "UsuarioId is required and must be greater than 0" });
+                }
+
+                var novoCliente = _clienteFactory.CreateCliente(
+                    cliente.Name,
+                    cliente.Email,
+                    cliente.Tipo,
+                    cliente.CNPJ,
+                    cliente.CPF
+                );
+                novoCliente.UsuarioId = cliente.UsuarioId;
+                await _clienteRepositorio.Adicionar(novoCliente);
+                return CreatedAtAction(nameof(GetClienteById), new { id = novoCliente.Id }, novoCliente);
+            }
+
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while creating the client." });
+            }
         }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCliente(int id, [FromBody] ClienteModel cliente)
@@ -67,7 +97,7 @@ namespace WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCliente(int id)
         {
-            await _clienteRepositorio.DeleteClienteAsync(id);
+            await _clienteRepositorio.Apagar(id);
             return NoContent();
         }
     }

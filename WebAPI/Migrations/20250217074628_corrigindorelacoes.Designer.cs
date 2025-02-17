@@ -12,18 +12,63 @@ using WebAPI.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(SistemaDeTarefasDBContext))]
-    [Migration("20240830021250_InitialDB")]
-    partial class InitialDB
+    [Migration("20250217074628_corrigindorelacoes")]
+    partial class corrigindorelacoes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("WebAPI.Models.ClienteModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CNPJ")
+                        .HasMaxLength(18)
+                        .HasColumnType("nvarchar(18)");
+
+                    b.Property<string>("CPF")
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UsuarioId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.HasIndex("UsuarioId1");
+
+                    b.ToTable("Clientes");
+                });
 
             modelBuilder.Entity("WebAPI.Models.TarefaModel", b =>
                 {
@@ -38,6 +83,9 @@ namespace WebAPI.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<DateTime?>("Ending")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -49,9 +97,14 @@ namespace WebAPI.Migrations
                     b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UsuarioModelId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UsuarioId");
+
+                    b.HasIndex("UsuarioModelId");
 
                     b.ToTable("Tarefas");
                 });
@@ -89,13 +142,39 @@ namespace WebAPI.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.ClienteModel", b =>
+                {
+                    b.HasOne("WebAPI.Models.UsuarioModel", null)
+                        .WithMany("Clientes")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.UsuarioModel", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId1");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("WebAPI.Models.TarefaModel", b =>
                 {
                     b.HasOne("WebAPI.Models.UsuarioModel", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId");
 
+                    b.HasOne("WebAPI.Models.UsuarioModel", null)
+                        .WithMany("Tarefas")
+                        .HasForeignKey("UsuarioModelId");
+
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.UsuarioModel", b =>
+                {
+                    b.Navigation("Clientes");
+
+                    b.Navigation("Tarefas");
                 });
 #pragma warning restore 612, 618
         }
