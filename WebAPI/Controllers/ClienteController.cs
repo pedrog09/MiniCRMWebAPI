@@ -17,9 +17,9 @@ namespace WebAPI.Controllers
         private readonly IClienteRepositorio _clienteRepositorio;
         private readonly IClienteFactory _clienteFactory;
 
-        public ClienteController(IClienteRepositorio clienteRepository, IClienteFactory clienteFactory)
+        public ClienteController(IClienteRepositorio clienteRepositorio, IClienteFactory clienteFactory)
         {
-            _clienteRepositorio = clienteRepository;
+            _clienteRepositorio = clienteRepositorio;
             _clienteFactory = clienteFactory;
         }
 
@@ -62,8 +62,8 @@ namespace WebAPI.Controllers
                 }
 
                 // Select validation strategy based on client type
-                IClienteValidationStrategy validationStrategy = cliente.Tipo.ToLower() == "pessoa" 
-                    ? new PessoaFisicaValidation() 
+                IClienteValidationStrategy validationStrategy = cliente.Tipo.ToLower() == "pessoa"
+                    ? new PessoaFisicaValidation()
                     : new PessoaJuridicaValidation();
 
                 var validator = new ClienteValidator(validationStrategy);
@@ -72,19 +72,20 @@ namespace WebAPI.Controllers
                     return BadRequest(new { message = $"Invalid {cliente.Tipo} data" });
                 }
 
-                var novoCliente = _clienteFactory.CreateCliente(
-                    cliente.Name,
-                    cliente.Email,
-                    cliente.Tipo,
-                    cliente.CNPJ,
-                    cliente.CPF
-                );
+                ClienteModel novoCliente;
+                if (cliente.Tipo.ToLower() == "pessoa")
+                {
+                    novoCliente = _clienteFactory.CreatePessoaFisica(cliente.Name, cliente.Email, cliente.CPF);
+                }
+                else
+                {
+                    novoCliente = _clienteFactory.CreatePessoaJuridica(cliente.Name, cliente.Email, cliente.CNPJ);
+                }
 
                 novoCliente.UsuarioId = cliente.UsuarioId;
                 await _clienteRepositorio.Adicionar(novoCliente);
                 return CreatedAtAction(nameof(GetClienteById), new { id = novoCliente.Id }, novoCliente);
             }
-
             catch (InvalidOperationException ex)
             {
                 return BadRequest(new { message = ex.Message });
@@ -94,7 +95,6 @@ namespace WebAPI.Controllers
                 return StatusCode(500, new { message = "An error occurred while creating the client." });
             }
         }
-
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCliente(int id, [FromBody] ClienteModel cliente)

@@ -11,7 +11,7 @@ namespace WebAPI.Factories
             {
                 Name = name,
                 Email = email,
-                Tipo = "PessoaFisica",
+                Tipo = "pessoa",
                 CPF = cpf,
                 CNPJ = null
             };
@@ -23,7 +23,7 @@ namespace WebAPI.Factories
             {
                 Name = name,
                 Email = email,
-                Tipo = "PessoaJuridica",
+                Tipo = "empresa",
                 CNPJ = cnpj,
                 CPF = null
             };
