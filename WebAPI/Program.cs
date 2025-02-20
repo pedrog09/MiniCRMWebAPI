@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Data;
 using WebAPI.Repositorios;
@@ -19,9 +18,7 @@ namespace WebAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
@@ -39,22 +36,21 @@ namespace WebAPI
                     Scheme = "Bearer",
                     BearerFormat = "Jwt",
                     In = ParameterLocation.Header,
-                    Description = "Cabeçalho de autorização JWT está usando o esquema de Bearer \r\n\r\n Digite o 'Bearer' antes de colocar o token. "
+                    Description = "CabeÃ§alho de autorizaÃ§Ã£o JWT usando o esquema de Bearer \r\n\r\n Digite o 'Bearer' antes de colocar o token."
                 });
 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
-                    // por que abriu outra chave aqui?
                     {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
+                        new OpenApiSecurityScheme
                         {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    Array.Empty<string>()
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
                     }
                 });
             });
@@ -63,21 +59,20 @@ namespace WebAPI
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
             })
-                .AddJwtBearer(options =>
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = builder.Configuration["Jwt:Issuer"], 
-                        ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-                    };
-                });
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                };
+            });
 
             builder.Services.AddEntityFrameworkSqlServer()
                 .AddDbContext<SistemaDeTarefasDBContext>(
@@ -89,7 +84,6 @@ namespace WebAPI
             builder.Services.AddScoped<ITokenRepositorio, TokenRepositorio>();
             builder.Services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
             builder.Services.AddScoped<IClienteFactory, ClienteFactory>();
-
 
             builder.Services.AddCors();
 
@@ -107,11 +101,10 @@ namespace WebAPI
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseCors(options => options
-            .SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
-            .AllowAnyMethod()
-            .AllowCredentials()
-            .AllowAnyHeader());
-
+                .SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .AllowAnyHeader());
 
             app.MapControllers();
 

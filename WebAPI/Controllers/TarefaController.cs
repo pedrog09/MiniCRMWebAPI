@@ -6,7 +6,6 @@ using WebAPI.Repositorios.Interfaces;
 
 namespace WebAPI.Controllers
 {
-    [Authorize(Roles = "Manager")]
     [Route("api/[controller]")]
     [ApiController]
     public class TarefaController : ControllerBase
@@ -17,8 +16,6 @@ namespace WebAPI.Controllers
         {
             _tarefaRepositorio = tarefaRepositorio;
         }
-
-
 
         [HttpGet]
         public async Task<ActionResult<List<TarefaModel>>> BuscarTodasTarefas()

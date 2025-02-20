@@ -27,8 +27,8 @@ namespace WebAPI.Repositorios
         public async Task<ClienteModel> Adicionar(ClienteModel cliente)
         {
             // Check if the referenced Usuario exists
-            var usuarioExists = await _context.Usuarios.AnyAsync(u => u.Id == cliente.UsuarioId);
-            if (!usuarioExists)
+            var clienteExists = await _context.Clientes.AnyAsync(u => u.Id == cliente.UsuarioId);
+            if (!clienteExists)
             {
                 throw new InvalidOperationException($"Usuario with ID {cliente.UsuarioId} does not exist.");
             }

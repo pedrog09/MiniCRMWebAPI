@@ -1,10 +1,10 @@
 ﻿using WebAPI.DTOs;
-using WebAPI.Models;
 
 namespace WebAPI.Repositorios.Interfaces
 {
     public interface ITokenRepositorio
     {
-        Task <string?> GenerateToken(LoginDto loginDto);
+        Task<string?> GetUserKey(LoginDto loginDto);
+        Task<string?> GenerateToken(LoginDto loginDto);
     }
 }

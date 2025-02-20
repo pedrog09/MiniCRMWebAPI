@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebAPI.DTOs;
 using WebAPI.Models;
 using WebAPI.Repositorios.Interfaces;
+using WebAPI.Data;
 
 namespace WebAPI.Controllers
 {
@@ -17,16 +18,30 @@ namespace WebAPI.Controllers
             _tokenRepositorio = tokenRepositorio;
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<ActionResult<LoginDto>> Login([FromBody] LoginDto loginDto)
         {
-            var token = await _tokenRepositorio.GenerateToken(loginDto);
-
-            if (String.IsNullOrEmpty(token)){ 
+            var userKey = await _tokenRepositorio.GetUserKey(loginDto);
+            
+            if (string.IsNullOrEmpty(userKey))
+            {
                 return Unauthorized();
             }
+                
+            return Ok(new { userKey });
+        }
 
-            return Ok(token);
+        [HttpPost("register")]
+        public async Task<ActionResult<LoginDto>> Register([FromBody] LoginDto loginDto)
+        {
+            var token = await _tokenRepositorio.GenerateToken(loginDto);
+            
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest();
+            }
+                
+            return Ok(new { token });
         }
     }
 }

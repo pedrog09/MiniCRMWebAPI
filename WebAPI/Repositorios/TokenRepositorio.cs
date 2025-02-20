@@ -1,55 +1,60 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebAPI.DTOs;
 using WebAPI.Models;
 using WebAPI.Repositorios.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using WebAPI.Data;
 
 namespace WebAPI.Repositorios
 {
     public class TokenRepositorio : ITokenRepositorio
     {
-
-
         private readonly IConfiguration _configuration;
-        private readonly IUsuarioRepositorio _usuarioRepositorio;
+        private readonly SistemaDeTarefasDBContext _context;
 
-        public TokenRepositorio(IConfiguration configuration, IUsuarioRepositorio usuarioRepositorio)
+        public TokenRepositorio(IConfiguration configuration, SistemaDeTarefasDBContext context)
         {
             _configuration = configuration;
-            _usuarioRepositorio = usuarioRepositorio;
+            _context = context;
         }
 
-        public async Task<string> GenerateToken(LoginDto loginDto)
+        public async Task<string?> GetUserKey(LoginDto loginDto)
         {
-            var usuarioDatabase = await _usuarioRepositorio.BuscarPorNome(loginDto.UserName);
+            var user = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Name == loginDto.UserName && u.Password == loginDto.Password);
 
-            if (loginDto.UserName != usuarioDatabase.Name || loginDto.Password != usuarioDatabase.Password)
+            return user.UserKey;
+        }
+
+        public async Task<string?> GenerateToken(LoginDto loginDto)
+        {
+            var user = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Name == loginDto.UserName && u.Password == loginDto.Password);
+
+            if (user == null)
+                return null;
+
+            var claims = new[]
             {
-                return string.Empty;
-            }
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
 
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? string.Empty));
-            var issuer = _configuration["Jwt:Issuer"];
-            var audience = _configuration["Jwt:Audience"];
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expiration = DateTime.UtcNow.AddHours(1);
 
-            var siginCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: expiration,
+                signingCredentials: creds);
 
-            var tokenOptions = new JwtSecurityToken(
-                issuer: issuer,
-                audience = audience,
-                claims: new[]
-                {
-                    new Claim(type: ClaimTypes.Name, usuarioDatabase.Name),
-                    new Claim(type: ClaimTypes.Role, usuarioDatabase.Role),
-                },
-                expires: DateTime.Now.AddHours(2),
-                signingCredentials: siginCredentials);
-
-            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-            return token;
-
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

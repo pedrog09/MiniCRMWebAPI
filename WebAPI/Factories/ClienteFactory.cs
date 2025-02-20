@@ -1,19 +1,31 @@
-﻿using WebAPI.Factories.FacInterfaces;
+﻿﻿using WebAPI.Factories.FacInterfaces;
 using WebAPI.Models;
 
 namespace WebAPI.Factories
 {
     public class ClienteFactory : IClienteFactory
     {
-        public ClienteModel CreateCliente(string name, string email, string tipo, string? cnpj, string? cpf)
+        public ClienteModel CreatePessoaFisica(string name, string email, string cpf)
         {
             return new ClienteModel
             {
                 Name = name,
                 Email = email,
-                Tipo = tipo,
+                Tipo = "PessoaFisica",
+                CPF = cpf,
+                CNPJ = null
+            };
+        }
+
+        public ClienteModel CreatePessoaJuridica(string name, string email, string cnpj)
+        {
+            return new ClienteModel
+            {
+                Name = name,
+                Email = email,
+                Tipo = "PessoaJuridica",
                 CNPJ = cnpj,
-                CPF = cpf
+                CPF = null
             };
         }
     }
