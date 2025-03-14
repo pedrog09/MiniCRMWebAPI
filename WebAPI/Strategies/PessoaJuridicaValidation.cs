@@ -1,10 +1,10 @@
-using WebAPI.Models;
+using WebAPI.DTOs;
 
 namespace WebAPI.Strategies
 {
     public class PessoaJuridicaValidation : IClienteValidationStrategy
     {
-        public bool Validate(ClienteModel cliente)
+        public bool Validate(ClienteDto cliente)
         {
             if (string.IsNullOrEmpty(cliente.CNPJ))
                 return false;

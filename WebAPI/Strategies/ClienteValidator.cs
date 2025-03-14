@@ -1,4 +1,4 @@
-using WebAPI.Models;
+using WebAPI.DTOs;
 
 namespace WebAPI.Strategies
 {
@@ -11,7 +11,7 @@ namespace WebAPI.Strategies
             _strategy = strategy;
         }
 
-        public bool Validate(ClienteModel cliente)
+        public bool Validate(ClienteDto cliente)
         {
             return _strategy.Validate(cliente);
         }

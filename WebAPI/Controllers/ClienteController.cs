@@ -1,12 +1,9 @@
-﻿﻿﻿﻿﻿﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.DTOs;
 using WebAPI.Factories.FacInterfaces;
 using WebAPI.Models;
-using WebAPI.Repositorios.Interfaces;
+using WebAPI.Services;
 using WebAPI.Strategies;
-
 
 namespace WebAPI.Controllers
 {
@@ -14,26 +11,26 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     public class ClienteController : ControllerBase
     {
-        private readonly IClienteRepositorio _clienteRepositorio;
+        private readonly ClienteService _clienteService;
         private readonly IClienteFactory _clienteFactory;
 
-        public ClienteController(IClienteRepositorio clienteRepositorio, IClienteFactory clienteFactory)
+        public ClienteController(ClienteService clienteService, IClienteFactory clienteFactory)
         {
-            _clienteRepositorio = clienteRepositorio;
+            _clienteService = clienteService;
             _clienteFactory = clienteFactory;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetClientes()
         {
-            var clientes = await _clienteRepositorio.GetClientesAsync();
+            var clientes = await _clienteService.GetClientesAsync();
             return Ok(clientes);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetClienteById(int id)
         {
-            var cliente = await _clienteRepositorio.BuscarPorId(id);
+            var cliente = await _clienteService.GetClienteByIdAsync(id);
             if (cliente == null)
             {
                 return NotFound();
@@ -42,9 +39,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCliente([FromBody] ClienteModel cliente)
+        public async Task<IActionResult> CreateCliente([FromBody] ClienteDto clienteDto)
         {
-            if (cliente == null)
+            if (clienteDto == null)
             {
                 return BadRequest(new { message = "Cliente data is required" });
             }
@@ -56,35 +53,24 @@ namespace WebAPI.Controllers
 
             try
             {
-                if (cliente.UsuarioId <= 0)
+                if (clienteDto.UsuarioId <= 0)
                 {
                     return BadRequest(new { message = "UsuarioId is required and must be greater than 0" });
                 }
 
                 // Select validation strategy based on client type
-                IClienteValidationStrategy validationStrategy = cliente.Tipo.ToLower() == "pessoa"
+                IClienteValidationStrategy validationStrategy = clienteDto.Tipo.ToLower() == "pessoa"
                     ? new PessoaFisicaValidation()
                     : new PessoaJuridicaValidation();
 
                 var validator = new ClienteValidator(validationStrategy);
-                if (!validator.Validate(cliente))
+                if (!validator.Validate(clienteDto))
                 {
-                    return BadRequest(new { message = $"Invalid {cliente.Tipo} data" });
+                    return BadRequest(new { message = $"Invalid {clienteDto.Tipo} data" });
                 }
 
-                ClienteModel novoCliente;
-                if (cliente.Tipo.ToLower() == "pessoa")
-                {
-                    novoCliente = _clienteFactory.CreatePessoaFisica(cliente.Name, cliente.Email, cliente.CPF);
-                }
-                else
-                {
-                    novoCliente = _clienteFactory.CreatePessoaJuridica(cliente.Name, cliente.Email, cliente.CNPJ);
-                }
-
-                novoCliente.UsuarioId = cliente.UsuarioId;
-                await _clienteRepositorio.Adicionar(novoCliente);
-                return CreatedAtAction(nameof(GetClienteById), new { id = novoCliente.Id }, novoCliente);
+                var createdCliente = await _clienteService.CreateClienteAsync(clienteDto);
+                return CreatedAtAction(nameof(GetClienteById), new { id = createdCliente.Id }, createdCliente);
             }
             catch (InvalidOperationException ex)
             {
@@ -104,14 +90,14 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            await _clienteRepositorio.UpdateClienteAsync(cliente);
+            await _clienteService.UpdateClienteAsync(cliente);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCliente(int id)
         {
-            await _clienteRepositorio.Apagar(id);
+            await _clienteService.DeleteClienteAsync(id);
             return NoContent();
         }
     }

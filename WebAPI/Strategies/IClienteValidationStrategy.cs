@@ -1,9 +1,9 @@
-using WebAPI.Models;
+using WebAPI.DTOs;
 
 namespace WebAPI.Strategies
 {
     public interface IClienteValidationStrategy
     {
-        bool Validate(ClienteModel cliente);
+        bool Validate(ClienteDto cliente);
     }
 }

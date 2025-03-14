@@ -5,11 +5,11 @@ using WebAPI.Repositorios.Interfaces;
 
 namespace WebAPI.Repositorios
 {
-    public class ClienteRepositorio : IClienteRepositorio
+    public class ClienteRepositorio : GenericRepository<ClienteModel>, IClienteRepositorio
     {
         private readonly SistemaDeTarefasDBContext _context;
 
-        public ClienteRepositorio(SistemaDeTarefasDBContext context)
+        public ClienteRepositorio(SistemaDeTarefasDBContext context) : base(context)
         {
             _context = context;
         }
@@ -18,49 +18,5 @@ namespace WebAPI.Repositorios
         {
             return await _context.Clientes.ToListAsync();
         }
-
-        public async Task <ClienteModel> BuscarPorId(int id)
-        {
-            return await _context.Clientes?.FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        public async Task<ClienteModel> Adicionar(ClienteModel cliente)
-        {
-            // Check if the referenced Usuario exists
-            var clienteExists = await _context.Clientes.AnyAsync(u => u.Id == cliente.UsuarioId);
-            if (!clienteExists)
-            {
-                throw new InvalidOperationException($"Usuario with ID {cliente.UsuarioId} does not exist.");
-            }
-
-            await _context.Clientes.AddAsync(cliente);
-            await _context.SaveChangesAsync();
-
-            return cliente;
-        }
-
-
-        public async Task<ClienteModel> UpdateClienteAsync(ClienteModel cliente)
-        {
-            _context.Clientes.Update(cliente);
-            await _context.SaveChangesAsync();
-            return cliente;
-        }
-
-        public async Task <bool> Apagar(int id)
-        {
-            ClienteModel clientePorId = await BuscarPorId(id);
-
-            if (clientePorId == null)
-            {
-                throw new Exception($"Usuario para o ID: {id} não foi encontrado no banco");
-            };
-
-            _context.Clientes.Remove(clientePorId);
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
-
     }
 }
