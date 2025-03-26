@@ -5,38 +5,38 @@ using WebAPI.Repositorios.Interfaces;
 
 namespace WebAPI.Repositorios
 {
-    public class UsuarioRepositorio : IUsuarioRepositorio
+    public class UserRepository : IUserRepository
     {
         private readonly SistemaDeTarefasDBContext _dbContext; 
-        public UsuarioRepositorio(SistemaDeTarefasDBContext sistemaDeTarefasDBContext) 
+        public UserRepository(SistemaDeTarefasDBContext sistemaDeTarefasDBContext) 
         {
             _dbContext = sistemaDeTarefasDBContext;
         }
 
-        public async Task<UsuarioModel> BuscarPorId(int id)
+        public async Task<UserModel> BuscarPorId(int id)
         {
             return await _dbContext.Usuarios?.FirstOrDefaultAsync(x=> x.Id == id);
         }
 
-        public async Task<UsuarioModel> BuscarPorNome(string name)
+        public async Task<UserModel> BuscarPorNome(string name)
         {
             return await _dbContext.Usuarios?.FirstOrDefaultAsync(x => x.Name == name);
         }
 
-        public async Task<List<UsuarioModel>> BuscarTodosUsuarios()
+        public async Task<List<UserModel>> BuscarTodosUsuarios()
         {
             return await _dbContext.Usuarios.ToListAsync();
         }
-        public async Task<UsuarioModel> Adicionar(UsuarioModel usuario)
+        public async Task<UserModel> Adicionar(UserModel usuario)
         {
             await _dbContext.Usuarios.AddAsync(usuario);
             await _dbContext.SaveChangesAsync();
 
             return usuario;
         }
-        public async Task<UsuarioModel> Atualizar(UsuarioModel usuario, int id)
+        public async Task<UserModel> Atualizar(UserModel usuario, int id)
         {
-            UsuarioModel usuarioPorId = await BuscarPorId(id);
+            UserModel usuarioPorId = await BuscarPorId(id);
 
             if (usuarioPorId == null) 
             {
@@ -56,7 +56,7 @@ namespace WebAPI.Repositorios
 
         public async Task<bool> Apagar(int id)
         {
-            UsuarioModel usuarioPorId = await BuscarPorId(id);
+            UserModel usuarioPorId = await BuscarPorId(id);
 
             if (usuarioPorId == null)
             {

@@ -11,16 +11,16 @@ namespace WebAPI.Data
         {
         }
 
-        public DbSet<ClienteModel> Clientes { get; set; }
-        public DbSet<UsuarioModel> Usuarios { get; set; }
-        public DbSet<TarefaModel> Tarefas { get; set; }
+        public DbSet<ClientModel> Clientes { get; set; }
+        public DbSet<UserModel> Usuarios { get; set; }
+        public DbSet<TaskModel> Tarefas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.ApplyConfiguration(new ClienteMap());
-            modelBuilder.ApplyConfiguration(new UsuarioMap());
-            modelBuilder.ApplyConfiguration(new TarefaMap());
+            modelBuilder.ApplyConfiguration(new ClientMap());
+            modelBuilder.ApplyConfiguration(new UserMap());
+            modelBuilder.ApplyConfiguration(new TaskMap());
 
             base.OnModelCreating(modelBuilder);
         }

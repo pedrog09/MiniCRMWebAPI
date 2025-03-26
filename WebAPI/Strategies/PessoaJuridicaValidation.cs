@@ -2,9 +2,9 @@ using WebAPI.DTOs;
 
 namespace WebAPI.Strategies
 {
-    public class PessoaJuridicaValidation : IClienteValidationStrategy
+    public class PessoaJuridicaValidation : IClientValidationStrategy
     {
-        public bool Validate(ClienteDto cliente)
+        public bool Validate(ClientDto cliente)
         {
             if (string.IsNullOrEmpty(cliente.CNPJ))
                 return false;

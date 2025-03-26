@@ -5,7 +5,7 @@ using WebAPI.Repositorios.Interfaces;
 
 namespace WebAPI.Repositorios
 {
-    public class ClienteRepositorio : GenericRepository<ClienteModel>, IClienteRepositorio
+    public class ClienteRepositorio : GenericRepository<ClientModel>, IClienteRepositorio
     {
         private readonly SistemaDeTarefasDBContext _context;
 
@@ -14,7 +14,7 @@ namespace WebAPI.Repositorios
             _context = context;
         }
 
-        public async Task<IEnumerable<ClienteModel>> GetClientesAsync()
+        public async Task<IEnumerable<ClientModel>> GetClientesAsync()
         {
             return await _context.Clientes.ToListAsync();
         }

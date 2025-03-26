@@ -4,6 +4,6 @@ namespace WebAPI.Strategies
 {
     public interface IClienteValidationStrategy
     {
-        bool Validate(ClienteDto cliente);
+        bool Validate(ClientDto cliente);
     }
 }

@@ -10,7 +10,7 @@
         public string UserKey { get; set; } = Guid.NewGuid().ToString("N"); // Generate a unique key
 
         // Relação com ClienteModel
-        public List<ClienteModel>? Clientes { get; set; }
+        public List<ClientModel>? Clientes { get; set; }
 
         // Relação com TarefaModel
         public List<TarefaModel>? Tarefas { get; set; }

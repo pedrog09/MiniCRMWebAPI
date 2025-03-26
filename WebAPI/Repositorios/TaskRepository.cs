@@ -5,37 +5,37 @@ using WebAPI.Repositorios.Interfaces;
 
 namespace WebAPI.Repositorios
 {
-    public class TarefaRepositorio : ITarefaRepositorio
+    public class TaskRepository : ITaskRepository
     {
         private readonly SistemaDeTarefasDBContext _dbContext; 
-        public TarefaRepositorio(SistemaDeTarefasDBContext sistemaDeTarefasDBContext) 
+        public TaskRepository(SistemaDeTarefasDBContext sistemaDeTarefasDBContext) 
         {
             _dbContext = sistemaDeTarefasDBContext;
         }
 
-        public async Task<TarefaModel> BuscarPorId(int id)
+        public async Task<TaskModel> BuscarPorId(int id)
         {
             return await _dbContext.Tarefas
                 .Include(x => x.Usuario)
                 .FirstOrDefaultAsync(x=> x.Id == id);
         }
 
-        public async Task<List<TarefaModel>> BuscarTodasTarefas()
+        public async Task<List<TaskModel>> BuscarTodasTarefas()
         {
             return await _dbContext.Tarefas
                 .Include(x => x.Usuario)
                 .ToListAsync();
         }
-        public async Task<TarefaModel> Adicionar(TarefaModel tarefa)
+        public async Task<TaskModel> Adicionar(TaskModel tarefa)
         {
             await _dbContext.Tarefas.AddAsync(tarefa);
             await _dbContext.SaveChangesAsync();
 
             return tarefa;
         }
-        public async Task<TarefaModel> Atualizar(TarefaModel tarefa, int id)
+        public async Task<TaskModel> Atualizar(TaskModel tarefa, int id)
         {
-            TarefaModel tarefaPorId = await BuscarPorId(id);
+            TaskModel tarefaPorId = await BuscarPorId(id);
 
             if (tarefaPorId == null) 
             {
@@ -55,7 +55,7 @@ namespace WebAPI.Repositorios
 
         public async Task<bool> Apagar(int id)
         {
-            TarefaModel tarefaPorId = await BuscarPorId(id);
+            TaskModel tarefaPorId = await BuscarPorId(id);
 
             if (tarefaPorId == null)
             {

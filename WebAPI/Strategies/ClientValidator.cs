@@ -11,7 +11,7 @@ namespace WebAPI.Strategies
             _strategy = strategy;
         }
 
-        public bool Validate(ClienteDto cliente)
+        public bool Validate(ClientDto cliente)
         {
             return _strategy.Validate(cliente);
         }

@@ -2,9 +2,9 @@ using WebAPI.DTOs;
 
 namespace WebAPI.Strategies
 {
-    public class PessoaFisicaValidation : IClienteValidationStrategy
+    public class PessoaFisicaValidation : IClientValidationStrategy
     {
-        public bool Validate(ClienteDto cliente)
+        public bool Validate(ClientDto cliente)
         {
             if (string.IsNullOrEmpty(cliente.CPF))
                 return false;

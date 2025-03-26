@@ -3,7 +3,7 @@ using WebAPI.Models;
 
 namespace WebAPI.Factories
 {
-    public class ClienteFactory : IClienteFactory
+    public class ClienteFactory : IClientFactory
     {
         public ClienteModel CreatePessoaFisica(string name, string email, string cpf)
         {

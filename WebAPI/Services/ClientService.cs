@@ -7,37 +7,37 @@ namespace WebAPI.Services
 {
     public class ClienteService
     {
-        private readonly IClienteRepositorio _clienteRepositorio;
+        private readonly IClientRepositorio _clienteRepositorio;
         private readonly IMapper _mapper;
 
-        public ClienteService(IClienteRepositorio clienteRepositorio, IMapper mapper)
+        public ClienteService(IClientRepositorio clienteRepositorio, IMapper mapper)
         {
             _clienteRepositorio = clienteRepositorio;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ClienteDto>> GetClientesAsync()
+        public async Task<IEnumerable<ClientDto>> GetClientesAsync()
         {
             var clientes = await _clienteRepositorio.GetClientesAsync();
-            return _mapper.Map<IEnumerable<ClienteDto>>(clientes);
+            return _mapper.Map<IEnumerable<ClientDto>>(clientes);
         }
 
-        public async Task<ClienteDto> GetClienteByIdAsync(int id)
+        public async Task<ClientDto> GetClienteByIdAsync(int id)
         {
             var cliente = await _clienteRepositorio.GetByIdAsync(id);
-            return _mapper.Map<ClienteDto>(cliente);
+            return _mapper.Map<ClientDto>(cliente);
         }
 
-        public async Task<ClienteDto> CreateClienteAsync(ClienteDto clienteDto)
+        public async Task<ClientDto> CreateClienteAsync(ClientDto clienteDto)
         {
-            var cliente = _mapper.Map<ClienteModel>(clienteDto);
+            var cliente = _mapper.Map<ClientModel>(clienteDto);
             var createdCliente = await _clienteRepositorio.AddAsync(cliente);
-            return _mapper.Map<ClienteDto>(createdCliente);
+            return _mapper.Map<ClientDto>(createdCliente);
         }
 
-        public async Task UpdateClienteAsync(ClienteDto clienteDto)
+        public async Task UpdateClienteAsync(ClientDto clienteDto)
         {
-            var cliente = _mapper.Map<ClienteModel>(clienteDto);
+            var cliente = _mapper.Map<ClientModel>(clienteDto);
             await _clienteRepositorio.UpdateAsync(cliente);
         }
 

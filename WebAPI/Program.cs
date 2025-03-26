@@ -79,11 +79,11 @@ namespace WebAPI
                     options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database"))
                 );
 
-            builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
-            builder.Services.AddScoped<ITarefaRepositorio, TarefaRepositorio>();
-            builder.Services.AddScoped<ITokenRepositorio, TokenRepositorio>();
-            builder.Services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
-            builder.Services.AddScoped<IClienteFactory, ClienteFactory>();
+            builder.Services.AddScoped<IUsuarioRepositorio, UserRepository>();
+            builder.Services.AddScoped<ITarefaRepositorio, TaskRepository>();
+            builder.Services.AddScoped<ITokenRepository, TokenRepositorio>();
+            builder.Services.AddScoped<IClientRepositorio, ClientRepository>();
+            builder.Services.AddScoped<IClientFactory, ClientFactory>();
 
             builder.Services.AddCors();
 

@@ -10,7 +10,7 @@ using WebAPI.Data;
 
 namespace WebAPI.Repositorios
 {
-    public class TokenRepositorio : ITokenRepositorio
+    public class TokenRepositorio : ITokenRepository
     {
         private readonly IConfiguration _configuration;
         private readonly SistemaDeTarefasDBContext _context;

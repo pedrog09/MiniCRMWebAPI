@@ -11,9 +11,9 @@ namespace WebAPI.Controllers
     [ApiController]
     public class AuthenticationController : Controller
     {
-        private readonly ITokenRepositorio _tokenRepositorio;
+        private readonly ITokenRepository _tokenRepositorio;
 
-        public AuthenticationController(ITokenRepositorio tokenRepositorio)
+        public AuthenticationController(ITokenRepository tokenRepositorio)
         {
             _tokenRepositorio = tokenRepositorio;
         }

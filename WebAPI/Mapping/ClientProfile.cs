@@ -8,8 +8,8 @@ namespace WebAPI.Mapping
     {
         public ClienteProfile()
         {
-            CreateMap<ClienteModel, ClienteDto>();
-            CreateMap<ClienteDto, ClienteModel>();
+            CreateMap<ClientModel, ClientDto>();
+            CreateMap<ClientDto, ClientModel>();
         }
     }
 }
