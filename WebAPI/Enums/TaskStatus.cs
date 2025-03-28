@@ -2,7 +2,7 @@
 
 namespace WebAPI.Enums
 {
-    public enum StatusTarefa
+    public enum TaskStatus
     {
         [Description("A fazer")]
         AFazer = 1,

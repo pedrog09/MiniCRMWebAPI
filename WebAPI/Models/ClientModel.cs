@@ -1,6 +1,6 @@
 ﻿namespace WebAPI.Models
 {
-    public class ClienteModel
+    public class ClientModel
     {
         public int Id { get; set; }
         public int UsuarioId { get; set; }

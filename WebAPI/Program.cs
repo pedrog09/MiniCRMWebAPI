@@ -81,7 +81,7 @@ namespace WebAPI
 
             builder.Services.AddScoped<IUsuarioRepositorio, UserRepository>();
             builder.Services.AddScoped<ITarefaRepositorio, TaskRepository>();
-            builder.Services.AddScoped<ITokenRepository, TokenRepositorio>();
+            builder.Services.AddScoped<ITokenRepository, TokenRepository>();
             builder.Services.AddScoped<IClientRepositorio, ClientRepository>();
             builder.Services.AddScoped<IClientFactory, ClientFactory>();
 

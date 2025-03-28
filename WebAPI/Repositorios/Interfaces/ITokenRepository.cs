@@ -2,7 +2,7 @@
 
 namespace WebAPI.Repositorios.Interfaces
 {
-    public interface ITokenRepositorio
+    public interface ITokenRepository
     {
         Task<string?> GetUserKey(LoginDto loginDto);
         Task<string?> GenerateToken(LoginDto loginDto);
