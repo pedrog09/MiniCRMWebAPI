@@ -2,7 +2,7 @@ using WebAPI.DTOs;
 
 namespace WebAPI.Strategies
 {
-    public interface IClienteValidationStrategy
+    public interface IClientValidationStrategy
     {
         bool Validate(ClientDto cliente);
     }

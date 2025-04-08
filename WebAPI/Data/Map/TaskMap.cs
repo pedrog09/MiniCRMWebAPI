@@ -4,9 +4,9 @@ using WebAPI.Models;
 
 namespace WebAPI.Data.Map
 {
-    public class TarefaMap : IEntityTypeConfiguration<TarefaModel>
+    public class TarefaMap : IEntityTypeConfiguration<TaskModel>
     {
-        public void Configure(EntityTypeBuilder<TarefaModel> builder)
+        public void Configure(EntityTypeBuilder<TaskModel> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).IsRequired().HasMaxLength(255);

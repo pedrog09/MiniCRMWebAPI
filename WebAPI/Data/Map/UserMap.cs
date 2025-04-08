@@ -4,9 +4,9 @@ using WebAPI.Models;
 
 namespace WebAPI.Data.Map
 {
-    public class UsuarioMap : IEntityTypeConfiguration<UsuarioModel>
+    public class UsuarioMap : IEntityTypeConfiguration<UserModel>
     {
-        public void Configure(EntityTypeBuilder<UsuarioModel> builder)
+        public void Configure(EntityTypeBuilder<UserModel> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).IsRequired().HasMaxLength(255);

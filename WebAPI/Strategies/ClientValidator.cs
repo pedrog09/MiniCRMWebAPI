@@ -2,11 +2,11 @@ using WebAPI.DTOs;
 
 namespace WebAPI.Strategies
 {
-    public class ClienteValidator
+    public class ClientValidator
     {
-        private readonly IClienteValidationStrategy _strategy;
+        private readonly IClientValidationStrategy _strategy;
 
-        public ClienteValidator(IClienteValidationStrategy strategy)
+        public ClientValidator(IClientValidationStrategy strategy)
         {
             _strategy = strategy;
         }

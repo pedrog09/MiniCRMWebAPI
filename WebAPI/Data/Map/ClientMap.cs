@@ -4,9 +4,9 @@ using WebAPI.Models;
 
 namespace WebAPI.Data.Map
 {
-    public class ClienteMap : IEntityTypeConfiguration<ClienteModel>
+    public class ClienteMap : IEntityTypeConfiguration<ClientModel>
     {
-        public void Configure(EntityTypeBuilder<ClienteModel> builder)
+        public void Configure(EntityTypeBuilder<ClientModel> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).IsRequired().HasMaxLength(255);
@@ -16,7 +16,7 @@ namespace WebAPI.Data.Map
             builder.Property(x => x.CPF).HasMaxLength(14); // Formato: 000.000.000-00
 
             // Configuração da relação com UsuarioModel
-            builder.HasOne<UsuarioModel>()
+            builder.HasOne<UserModel>()
                    .WithMany(u => u.Clientes)
                    .HasForeignKey(c => c.UsuarioId);
         }

@@ -12,9 +12,9 @@ namespace WebAPI.Controllers
     public class ClienteController : ControllerBase
     {
         private readonly ClienteService _clienteService;
-        private readonly IClienteFactory _clienteFactory;
+        private readonly IClientFactory _clienteFactory;
 
-        public ClienteController(ClienteService clienteService, IClienteFactory clienteFactory)
+        public ClienteController(ClienteService clienteService, IClientFactory clienteFactory)
         {
             _clienteService = clienteService;
             _clienteFactory = clienteFactory;
@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCliente([FromBody] ClienteDto clienteDto)
+        public async Task<IActionResult> CreateCliente([FromBody] ClientDto clienteDto)
         {
             if (clienteDto == null)
             {
@@ -59,11 +59,11 @@ namespace WebAPI.Controllers
                 }
 
                 // Select validation strategy based on client type
-                IClienteValidationStrategy validationStrategy = clienteDto.Tipo.ToLower() == "pessoa"
+                IClientValidationStrategy validationStrategy = clienteDto.Tipo.ToLower() == "pessoa"
                     ? new PessoaFisicaValidation()
                     : new PessoaJuridicaValidation();
 
-                var validator = new ClienteValidator(validationStrategy);
+                var validator = new ClientValidator(validationStrategy);
                 if (!validator.Validate(clienteDto))
                 {
                     return BadRequest(new { message = $"Invalid {clienteDto.Tipo} data" });
@@ -78,19 +78,31 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while creating the client." });
+                return StatusCode(500, new { message = "An error occurred while creating the client. %s", ex });
             }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCliente(int id, [FromBody] ClienteModel cliente)
+        public async Task<IActionResult> UpdateCliente(int id, [FromBody] ClientModel cliente)
         {
             if (id != cliente.Id)
             {
                 return BadRequest();
             }
 
-            await _clienteService.UpdateClienteAsync(cliente);
+            // Map ClientModel to ClientDto
+            var clienteDto = new ClientDto
+            {
+                Id = cliente.Id,
+                UsuarioId = cliente.UsuarioId,
+                Name = cliente.Name,
+                Email = cliente.Email,
+                Tipo = cliente.Tipo,
+                CNPJ = cliente.CNPJ,
+                CPF = cliente.CPF
+            };
+
+            await _clienteService.UpdateClienteAsync(clienteDto);
             return NoContent();
         }
 

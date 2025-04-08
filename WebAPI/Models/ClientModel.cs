@@ -11,7 +11,7 @@
         public string? CPF { get; set; }
 
         // Relação com UsuarioModel
-        public UsuarioModel? Usuario { get; set; }
+        public UserModel? Usuario { get; set; }
 
     }
 }

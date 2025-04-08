@@ -5,9 +5,9 @@ namespace WebAPI.Factories
 {
     public class ClienteFactory : IClientFactory
     {
-        public ClienteModel CreatePessoaFisica(string name, string email, string cpf)
+        public ClientModel CreatePessoaFisica(string name, string email, string cpf)
         {
-            return new ClienteModel
+            return new ClientModel
             {
                 Name = name,
                 Email = email,
@@ -17,9 +17,9 @@ namespace WebAPI.Factories
             };
         }
 
-        public ClienteModel CreatePessoaJuridica(string name, string email, string cnpj)
+        public ClientModel CreatePessoaJuridica(string name, string email, string cnpj)
         {
-            return new ClienteModel
+            return new ClientModel
             {
                 Name = name,
                 Email = email,

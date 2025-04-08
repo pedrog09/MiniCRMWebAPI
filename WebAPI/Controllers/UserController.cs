@@ -9,11 +9,11 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly IUsuarioRepositorio _usuarioRepositorio;
+        private readonly IUserRepository _usuarioRepositorio;
 
-        public UsuarioController(IUsuarioRepositorio usuarioRepositorio)
+        public UserController(IUserRepository usuarioRepositorio)
         {
             _usuarioRepositorio = usuarioRepositorio;
         }
@@ -21,37 +21,37 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<UsuarioModel>>> BuscarTodosUsuarios()
+        public async Task<ActionResult<List<UserModel>>> BuscarTodosUsuarios()
         {
-            List<UsuarioModel> usuarios = await _usuarioRepositorio.BuscarTodosUsuarios();
+            List<UserModel> usuarios = await _usuarioRepositorio.BuscarTodosUsuarios();
             return Ok(usuarios);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UsuarioModel>> BuscarPorId(int id)
+        public async Task<ActionResult<UserModel>> BuscarPorId(int id)
         {
-            UsuarioModel usuario = await _usuarioRepositorio.BuscarPorId(id);
+            UserModel usuario = await _usuarioRepositorio.BuscarPorId(id);
             return Ok(usuario);
         }
 
         [HttpPost]
-        public async Task<ActionResult<UsuarioModel>> Cadastrar([FromBody] UsuarioModel usuarioModel)
+        public async Task<ActionResult<UserModel>> Cadastrar([FromBody] UserModel usuarioModel)
         {
-            UsuarioModel usuario = await _usuarioRepositorio.Adicionar(usuarioModel);
+            UserModel usuario = await _usuarioRepositorio.Adicionar(usuarioModel);
             return Ok(usuario);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UsuarioModel>> Atualizar([FromBody] UsuarioModel usuarioModel, int id)
+        public async Task<ActionResult<UserModel>> Atualizar([FromBody] UserModel usuarioModel, int id)
         {
             usuarioModel.Id = id;
-            UsuarioModel usuario = await _usuarioRepositorio.Atualizar(usuarioModel, id);
+            UserModel usuario = await _usuarioRepositorio.Atualizar(usuarioModel, id);
             return Ok(usuario);
         }
 
         [HttpDelete("{id}")]
 
-        public async Task<ActionResult<UsuarioModel>> Apagar(int id)
+        public async Task<ActionResult<UserModel>> Apagar(int id)
         {
             bool apagado = await _usuarioRepositorio.Apagar(id);
             return Ok(apagado);

@@ -2,9 +2,9 @@
 
 namespace WebAPI.Factories.FacInterfaces
 {
-    public interface IClienteFactory
+    public interface IClientFactory
     {
-        ClienteModel CreatePessoaFisica(string name, string email, string cpf);
-        ClienteModel CreatePessoaJuridica(string name, string email, string cnpj);
+        ClientModel CreatePessoaFisica(string name, string email, string cpf);
+        ClientModel CreatePessoaJuridica(string name, string email, string cnpj);
     }
 }

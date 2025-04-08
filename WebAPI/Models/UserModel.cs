@@ -13,7 +13,7 @@
         public List<ClientModel>? Clientes { get; set; }
 
         // Relação com TarefaModel
-        public List<TarefaModel>? Tarefas { get; set; }
+        public List<TaskModel>? Tarefas { get; set; }
 
 
         public UserModel()
