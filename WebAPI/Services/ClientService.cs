@@ -5,12 +5,12 @@ using WebAPI.Repositorios.Interfaces;
 
 namespace WebAPI.Services
 {
-    public class ClienteService
+    public class ClientService
     {
         private readonly IClientRepositorio _clienteRepositorio;
         private readonly IMapper _mapper;
 
-        public ClienteService(IClientRepositorio clienteRepositorio, IMapper mapper)
+        public ClientService(IClientRepositorio clienteRepositorio, IMapper mapper)
         {
             _clienteRepositorio = clienteRepositorio;
             _mapper = mapper;

@@ -1,6 +1,6 @@
 ﻿﻿﻿﻿namespace WebAPI.Models
 {
-    public class UsuarioModel
+    public class UserModel
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -13,6 +13,6 @@
         public List<ClientModel>? Clientes { get; set; }
 
         // Relação com TarefaModel
-        public List<TarefaModel>? Tarefas { get; set; }
+        public List<TaskModel>? Tarefas { get; set; }
     }
 }

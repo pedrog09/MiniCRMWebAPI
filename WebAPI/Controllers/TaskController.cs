@@ -8,47 +8,47 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TarefaController : ControllerBase
+    public class TaskController : ControllerBase
     {
         private readonly ITarefaRepositorio _tarefaRepositorio;
 
-        public TarefaController(ITarefaRepositorio tarefaRepositorio)
+        public TaskController(ITarefaRepositorio tarefaRepositorio)
         {
             _tarefaRepositorio = tarefaRepositorio;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TarefaModel>>> BuscarTodasTarefas()
+        public async Task<ActionResult<List<TaskModel>>> BuscarTodasTarefas()
         {
-            List<TarefaModel> tarefas = await _tarefaRepositorio.BuscarTodasTarefas();
+            List<TaskModel> tarefas = await _tarefaRepositorio.BuscarTodasTarefas();
             return Ok(tarefas);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TarefaModel>> BuscarPorId(int id)
+        public async Task<ActionResult<TaskModel>> BuscarPorId(int id)
         {
-            TarefaModel tarefas = await _tarefaRepositorio.BuscarPorId(id);
+            TaskModel tarefas = await _tarefaRepositorio.BuscarPorId(id);
             return Ok(tarefas);
         }
 
         [HttpPost]
-        public async Task<ActionResult<TarefaModel>> Cadastrar([FromBody] TarefaModel tarefaModel)
+        public async Task<ActionResult<TaskModel>> Cadastrar([FromBody] TaskModel tarefaModel)
         {
-            TarefaModel tarefas = await _tarefaRepositorio.Adicionar(tarefaModel);
+            TaskModel tarefas = await _tarefaRepositorio.Adicionar(tarefaModel);
             return Ok(tarefas);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<TarefaModel>> Atualizar([FromBody] TarefaModel tarefaModel, int id)
+        public async Task<ActionResult<TaskModel>> Atualizar([FromBody] TaskModel tarefaModel, int id)
         {
             tarefaModel.Id = id;
-            TarefaModel tarefas = await _tarefaRepositorio.Atualizar(tarefaModel, id);
+            TaskModel tarefas = await _tarefaRepositorio.Atualizar(tarefaModel, id);
             return Ok(tarefas);
         }
 
         [HttpDelete("{id}")]
 
-        public async Task<ActionResult<TarefaModel>> Apagar(int id)
+        public async Task<ActionResult<TaskModel>> Apagar(int id)
         {
             bool apagado = await _tarefaRepositorio.Apagar(id);
             return Ok(apagado);

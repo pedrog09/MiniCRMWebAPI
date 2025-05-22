@@ -5,7 +5,7 @@ using WebAPI.Repositorios.Interfaces;
 
 namespace WebAPI.Repositorios
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    abstract class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly SistemaDeTarefasDBContext _context;
         private readonly DbSet<T> _dbSet;

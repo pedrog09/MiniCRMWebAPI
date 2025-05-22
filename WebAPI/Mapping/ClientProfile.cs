@@ -4,9 +4,9 @@ using WebAPI.Models;
 
 namespace WebAPI.Mapping
 {
-    public class ClienteProfile : Profile
+    public class ClientProfile : Profile
     {
-        public ClienteProfile()
+        public ClientProfile()
         {
             CreateMap<ClientModel, ClientDto>();
             CreateMap<ClientDto, ClientModel>();
