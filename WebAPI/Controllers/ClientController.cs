@@ -78,7 +78,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while creating the client." });
+                return StatusCode(500, new { message = "An error occurred while creating the client. %s", ex });
             }
         }
 
@@ -90,7 +90,19 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            await _clienteService.UpdateClienteAsync(cliente);
+            // Map ClientModel to ClientDto
+            var clienteDto = new ClientDto
+            {
+                Id = cliente.Id,
+                UsuarioId = cliente.UsuarioId,
+                Name = cliente.Name,
+                Email = cliente.Email,
+                Tipo = cliente.Tipo,
+                CNPJ = cliente.CNPJ,
+                CPF = cliente.CPF
+            };
+
+            await _clienteService.UpdateClienteAsync(clienteDto);
             return NoContent();
         }
 

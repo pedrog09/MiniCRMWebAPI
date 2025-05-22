@@ -7,10 +7,11 @@ namespace WebAPI.Services
 {
     public class ClientService
     {
-        private readonly IClientRepositorio _clienteRepositorio;
+        private readonly IClientRepository _clienteRepositorio;
         private readonly IMapper _mapper;
 
-        public ClientService(IClientRepositorio clienteRepositorio, IMapper mapper)
+    
+        public ClientService(IClientRepository clienteRepositorio, IMapper mapper)
         {
             _clienteRepositorio = clienteRepositorio;
             _mapper = mapper;

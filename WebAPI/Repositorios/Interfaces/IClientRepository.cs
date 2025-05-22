@@ -3,7 +3,7 @@ using WebAPI.Repositorios.Interfaces;
 
 namespace WebAPI.Repositorios.Interfaces
 {
-    public interface IClientRepositorio : IGenericRepository<ClientModel>
+    public interface IClientRepository : IGenericRepository<ClientModel>
     {
         Task<IEnumerable<ClientModel>> GetClientesAsync();
     }

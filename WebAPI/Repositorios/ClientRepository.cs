@@ -5,7 +5,7 @@ using WebAPI.Repositorios.Interfaces;
 
 namespace WebAPI.Repositorios
 {
-    public class ClientRepository : GenericRepository<ClientModel>, IClientRepositorio
+    public class ClientRepository : GenericRepository<ClientModel>, IClientRepository
     {
         private readonly SistemaDeTarefasDBContext _context;
 

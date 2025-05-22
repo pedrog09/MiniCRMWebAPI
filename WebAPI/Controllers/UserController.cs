@@ -11,9 +11,9 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUsuarioRepositorio _usuarioRepositorio;
+        private readonly IUserRepository _usuarioRepositorio;
 
-        public UserController(IUsuarioRepositorio usuarioRepositorio)
+        public UserController(IUserRepository usuarioRepositorio)
         {
             _usuarioRepositorio = usuarioRepositorio;
         }

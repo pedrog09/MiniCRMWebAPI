@@ -10,9 +10,9 @@ namespace WebAPI.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-        private readonly ITarefaRepositorio _tarefaRepositorio;
+        private readonly ITaskRepository _tarefaRepositorio;
 
-        public TaskController(ITarefaRepositorio tarefaRepositorio)
+        public TaskController(ITaskRepository tarefaRepositorio)
         {
             _tarefaRepositorio = tarefaRepositorio;
         }
